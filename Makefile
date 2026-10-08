@@ -1,6 +1,6 @@
 .SUFFIXES:
 
-CMD_PATH := ./cmd/server
+CMD_PATH := ./cmd
 LOCAL_COMPOSE_FILE := docker-compose.local.yaml
 COMPOSE_FILE := docker-compose.yaml
 DB_CONTAINER := dasom-postgres
@@ -113,3 +113,24 @@ run: swag
 		echo ".env file not found!"; \
 		exit 1; \
 	fi
+
+# 외부 의존성 패키지 설치
+deps:
+	@echo "Installing dependencies..."
+	go mod tidy
+
+	@echo "Installing Gin framework..."
+	go get github.com/gin-gonic/gin
+
+	@echo "Installing database packages..."
+	get gorm.io/gorm
+	go get github.com/lib/pq
+	go get gorm.io/driver/postgres
+	
+	@echo "Installing JWT package..."
+	go get github.com/golang-jwt/jwt/v5
+
+	@echo "Installing Config related packages..."
+	go get github.com/go-viper/mapstructure/v2
+	go get github.com/joho/godotenv
+	go get github.com/spf13/viper
